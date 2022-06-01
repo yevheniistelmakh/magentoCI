@@ -31,5 +31,5 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
           
     - name: build nginx image           
-      run: docker build nginx/Dockerfile -t ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ secrets.TAG_NGINX }} .  
+      run: docker build -f nginx/Dockerfile -t ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ secrets.TAG_NGINX }}  
       
