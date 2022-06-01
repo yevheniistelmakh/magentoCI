@@ -38,9 +38,9 @@ jobs:
       id: docker-scan
       uses: alexjurkiewicz/ecr-scan-image@v1.7.0
       with:
-          repository: ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}
-          tag: ${{ secrets.TAG_NGINX }}
-          fail_threshold: ${{ secrets.FAIL_THRESHOLD }}
+        repository: ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}
+        tag: ${{ secrets.TAG_NGINX }}
+        fail_threshold: ${{ secrets.FAIL_THRESHOLD }}
 
     - name: push nginx image
       run:
