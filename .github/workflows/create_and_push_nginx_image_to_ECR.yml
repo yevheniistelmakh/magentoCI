@@ -33,15 +33,4 @@ jobs:
     - name: Build nginx image           
       run: docker build -f nginx/Dockerfile -t ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ secrets.TAG_NGINX }} .  
         
-    - name: Scan nginx image
-      if: ${{ secrets.DISPATCH_TAG == 'false' }}
-      uses: anchore/scan-action@v3
-      continue-on-error: true
-      with:
-        image: "${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ secrets.TAG_NGINX }}"        
-        fail-build: true
-        severity: HIGH, CRITICAL, MEDIUM
-    
-    - name: Push nginx image to ECR
-      if: ${{ secrets.DISPATCH_TAG == 'true' }}
-      run: docker push ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ secrets.TAG_NGINX }}
+   
