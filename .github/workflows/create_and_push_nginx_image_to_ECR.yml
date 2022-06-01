@@ -40,9 +40,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
           
     - name: Build nginx image           
-      run: |
-        docker build -f nginx/Dockerfile -t ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ TAG_NGINX }} .  
-        echo ${{ secrets.DISPATCH_TAG }}
+      run: docker build -f nginx/Dockerfile -t ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ TAG_NGINX }} .  
         
     - name: Scan nginx image
       if: ${{ secrets.DISPATCH_TAG == 'false' }}
