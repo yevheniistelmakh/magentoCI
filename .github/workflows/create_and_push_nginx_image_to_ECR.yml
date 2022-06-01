@@ -34,13 +34,13 @@ jobs:
       run: |
         docker build -f nginx/Dockerfile -t ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ secrets.TAG_NGINX }} . 
 
-    - name: Scan Docker image
-        id: docker-scan
-        uses: alexjurkiewicz/ecr-scan-image@v1.7.0
-        with:
+    - name: scan docker images
+      id: docker-scan
+      uses: alexjurkiewicz/ecr-scan-image@v1.7.0
+      with:
           repository: ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}
           tag: ${{ secrets.TAG_NGINX }}
-          fail_threshold: critical
+          fail_threshold: ${{ secrets.FAIL_THRESHOLD }}
 
     - name: push nginx image
       run:
