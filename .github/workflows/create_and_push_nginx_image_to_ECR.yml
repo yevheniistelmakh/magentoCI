@@ -1,21 +1,12 @@
 name: Create and push nginx image to ECR
 
 on:
-  push:
-    branches: [ master ]
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: 'Log level'     
+      Name:
+        description: Who to greet
         required: true
-        default: 'warning' 
-        type: choice
-        options:
-        - create a new image
-      tags:
-        description: 'Test scenario tags'
-        required: false 
-        type: boolean
+        default: 'GitHub Actions'
 
 jobs:
   deploy:
