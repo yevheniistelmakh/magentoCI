@@ -11,7 +11,7 @@ on:
         options:
         - create a new image
       tags:
-        description: 'Test tags'
+        description: 'skip scan'
         required: false 
         type: boolean
 
