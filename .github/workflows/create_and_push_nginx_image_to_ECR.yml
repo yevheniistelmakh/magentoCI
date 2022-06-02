@@ -50,7 +50,7 @@ jobs:
         
     - name: push nginx image
       run:
-        docker push ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ env.TAG_NGINX }}
+        docker push $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX
 
 
       
