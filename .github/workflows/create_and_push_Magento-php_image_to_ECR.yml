@@ -46,7 +46,7 @@ jobs:
           
     - name: build Magento image           
       run: 
-        docker build -f php-fpm/Dockerfile -t $ECR_REGISTRY_MAGENTO/$ECR_REPOSITORY_MAGENTO:$TAG_MAGENTO . 
+        docker build -f build_magento_image/Dockerfile -t $ECR_REGISTRY_MAGENTO/$ECR_REPOSITORY_MAGENTO:$TAG_MAGENTO . 
         
     - name: Scan Docker image
       if: ${{ env.SKIP_SCAN == 'false' }}
