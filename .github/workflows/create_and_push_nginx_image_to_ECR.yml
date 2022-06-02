@@ -42,9 +42,9 @@ jobs:
         docker build -f nginx/Dockerfile -t $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX . 
         
     - name: Scan Docker image
-      uses: anchore/scan-action@v3
+      uses: alexjurkiewicz/ecr-scan-image@v1.7.0
       with:
-          repository: "$ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX"
+          repository: $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX
           tag: ${{ env.TAG_NGINX }}
           fail_threshold: critical
         
