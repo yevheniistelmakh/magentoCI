@@ -59,8 +59,8 @@ jobs:
           fail_threshold: CRITICAL, MEDIUM
         
     - name: push nginx image
-      run: |
-        if: ${{ env.DISPATCH_TAG == 'true' }} 
+      if: ${{ env.DISPATCH_TAG == 'true' }} 
+      run: 
         docker push $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX
 
 
