@@ -1,4 +1,4 @@
-name: Create and push php-fpm image to ECR
+name: Create and push Magento image to ECR
 
 on:
   workflow_dispatch:
@@ -16,11 +16,11 @@ on:
         type: boolean
 
 env:
-  AWS_REGION:           eu-central-1
-  TAG_PHP:              latest
-  ECR_REPOSITORY_PHP:   php-fpm
-  ECR_REGISTRY_PHP:     908410081654.dkr.ecr.eu-central-1.amazonaws.com
-  SKIP_SCAN:            ${{ github.event.inputs.tags }}    
+  AWS_REGION:               eu-central-1
+  TAG_MAGENTO:              latest
+  ECR_REPOSITORY_MAGENTO:   php_with_magento
+  ECR_REGISTRY_MAGENTO:     908410081654.dkr.ecr.eu-central-1.amazonaws.com
+  SKIP_SCAN:                ${{ github.event.inputs.tags }}    
   
 jobs:
   deploy:
@@ -44,23 +44,23 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
           
-    - name: build nginx image           
+    - name: build Magento image           
       run: 
-        docker build -f php-fpm/Dockerfile -t $ECR_REGISTRY_PHP/$ECR_REPOSITORY_PHP:$TAG_PHP . 
+        docker build -f php-fpm/Dockerfile -t $ECR_REGISTRY_MAGENTO/$ECR_REPOSITORY_MAGENTO:$TAG_MAGENTO . 
         
     - name: Scan Docker image
       if: ${{ env.SKIP_SCAN == 'false' }}
       uses: anchore/scan-action@v3
   #    continue-on-error: true
       with:
-          repository: $ECR_REGISTRY_PHP/$ECR_REPOSITORY_PHP
-          tag: ${{ env.TAG_PHP }}
+          repository: $ECR_REGISTRY_MAGENTO/$ECR_REPOSITORY_MAGENTO
+          tag: ${{ env.TAG_MAGENTO }}
           fail-build: true
           fail_threshold: critical, high, medium
         
-    - name: push nginx image
+    - name: push Magento image
       run: 
-        docker push $ECR_REGISTRY_PHP/$ECR_REPOSITORY_PHP:$TAG_PHP
+        docker push $ECR_REGISTRY_MAGENTO/$ECR_REPOSITORY_MAGENTO:$TAG_MAGENTO
 
 
       
