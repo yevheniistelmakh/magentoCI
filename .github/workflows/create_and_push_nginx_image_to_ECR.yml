@@ -41,12 +41,12 @@ jobs:
       run: |
         docker build -f nginx/Dockerfile -t $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX . 
 
-    - name: scan docker images
+    - name: Scan Docker image
       uses: alexjurkiewicz/ecr-scan-image@v1.7.0
       with:
-        image: "$ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX"        
-        fail-build: true
-        severity: critical
+          repository: $ECR_REPOSITORY_NGINX/"$ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX"
+          tag: $TAG_NGINX
+          fail_threshold: critical
         
     - name: push nginx image
       run:
