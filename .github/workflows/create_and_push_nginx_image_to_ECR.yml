@@ -48,20 +48,19 @@ jobs:
       run: |
         docker build -f nginx/Dockerfile -t $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX . 
         echo ${{ github.event.inputs.tags }}
-        
     - name: Scan Docker image
       if: ${{ env.DISPATCH_TAG == 'false' }}
       uses: anchore/scan-action@v3
-      continue-on-error: true
+  #    continue-on-error: true
       with:
           repository: $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX
           tag: ${{ env.TAG_NGINX }}
           fail-build: true
-          fail_threshold: critical, high, medium
+          fail_threshold: CRITICAL, MEDIUM
         
     - name: push nginx image
       run: |
-        if: ${{ env.DISPATCH_TAG == 'true' }}
+        if: ${{ env.DISPATCH_TAG == 'true' }} 
         docker push $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX
 
 
