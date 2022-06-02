@@ -44,10 +44,10 @@ jobs:
     - name: scan docker images
       uses: alexjurkiewicz/ecr-scan-image@v1.7.0
       with:
-        repository: 908410081654.dkr.ecr.eu-central-1.amazonaws.com/nginx
-        tag: latest
-        fail_threshold: critical
-
+        image: "$ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX"        
+        fail-build: true
+        severity: critical
+        
     - name: push nginx image
       run:
         docker push ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ env.TAG_NGINX }}
