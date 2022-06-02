@@ -44,7 +44,7 @@ jobs:
     - name: scan docker images
       uses: alexjurkiewicz/ecr-scan-image@v1.7.0
       with:
-        repository: $ECR_REPOSITORY_NGINX
+        repository: 908410081654.dkr.ecr.eu-central-1.amazonaws.com/nginx
         tag: $TAG_NGINX
         fail_threshold: critical
 
