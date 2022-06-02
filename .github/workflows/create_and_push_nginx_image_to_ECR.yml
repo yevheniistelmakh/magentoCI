@@ -45,7 +45,7 @@ jobs:
       uses: alexjurkiewicz/ecr-scan-image@v1.7.0
       with:
         repository: 908410081654.dkr.ecr.eu-central-1.amazonaws.com/nginx
-        tag: $TAG_NGINX
+        tag: latest
         fail_threshold: critical
 
     - name: push nginx image
