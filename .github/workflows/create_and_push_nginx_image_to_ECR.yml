@@ -31,7 +31,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
+        aws-region: ${{ env.AWS_REGION }}
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -42,7 +42,7 @@ jobs:
         docker build -f nginx/Dockerfile -t $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX . 
         
     - name: Scan Docker image
-      uses: alexjurkiewicz/ecr-scan-image@v1.7.0
+      uses: anchore/scan-action@v3
       with:
           repository: $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX
           tag: ${{ env.TAG_NGINX }}
