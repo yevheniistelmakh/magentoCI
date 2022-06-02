@@ -3,17 +3,24 @@ name: Create and push nginx image to ECR
 on:
   workflow_dispatch:
     inputs:
-      Name:
-        description: Who to greet
+      logLevel:
+        description: 'Log level'     
         required: true
-        default: 'GitHub Actions'
+        default: 'warning' 
+        type: choice
+        options:
+        - create a new image
+      tags:
+        description: 'Test tags'
+        required: false 
+        type: boolean
 
 env:
   AWS_REGION:           eu-central-1
   TAG_NGINX:            latest
   ECR_REPOSITORY_NGINX: nginx
   ECR_REGISTRY_NGINX:   908410081654.dkr.ecr.eu-central-1.amazonaws.com
-        
+  DISPATCH_TAG:         ${{ github.event.inputs.tags }}      
 
 jobs:
   deploy:
