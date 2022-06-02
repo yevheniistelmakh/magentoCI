@@ -7,6 +7,7 @@ on:
         description: Who to greet
         required: true
         default: 'GitHub Actions'
+        
 
 jobs:
   deploy:
@@ -37,7 +38,7 @@ jobs:
     - name: scan docker images
       uses: alexjurkiewicz/ecr-scan-image@v1.7.0
       with:
-        repository: ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}
+        repository: ${{ secrets.ECR_REPOSITORY_NGINX }}
         tag: ${{ secrets.TAG_NGINX }}
         fail_threshold: ${{ secrets.FAIL_THRESHOLD }}
 
