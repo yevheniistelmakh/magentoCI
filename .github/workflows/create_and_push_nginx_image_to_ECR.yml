@@ -9,7 +9,7 @@ on:
         default: 'warning' 
         type: choice
         options:
-        - create a new image
+        - create image
       tags:
         description: 'skip scan'
         required: false 
@@ -45,18 +45,22 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
           
     - name: build nginx image           
-      run: |
+      run: 
         docker build -f nginx/Dockerfile -t $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX . 
         
     - name: Scan Docker image
+      if: ${{ env.DISPATCH_TAG == 'false' }}
       uses: anchore/scan-action@v3
+      continue-on-error: true
       with:
           repository: $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX
           tag: ${{ env.TAG_NGINX }}
-          fail_threshold: critical
+          fail-build: true
+          fail_threshold: critical, high, medium
         
     - name: push nginx image
-      run:
+      run: |
+        if: ${{ env.DISPATCH_TAG == 'true' }}
         docker push $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX
 
 
