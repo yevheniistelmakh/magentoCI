@@ -44,7 +44,7 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
           
-    - name: build nginx image           
+    - name: build php image           
       run: 
         docker build -f php-fpm/Dockerfile -t $ECR_REGISTRY_PHP/$ECR_REPOSITORY_PHP:$TAG_PHP . 
         
@@ -58,7 +58,7 @@ jobs:
           fail-build: true
           fail_threshold: critical, high, medium
         
-    - name: push nginx image
+    - name: push php image
       run: 
         docker push $ECR_REGISTRY_PHP/$ECR_REPOSITORY_PHP:$TAG_PHP
 
