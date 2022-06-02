@@ -47,7 +47,7 @@ jobs:
     - name: build nginx image           
       run: |
         docker build -f nginx/Dockerfile -t $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX . 
-        echo $DISPATCH_TAG
+        echo ${{ github.event.inputs.tags }}
         
     - name: Scan Docker image
       if: ${{ env.DISPATCH_TAG == 'false' }}
