@@ -45,7 +45,6 @@ jobs:
       uses: alexjurkiewicz/ecr-scan-image@v1.7.0
       with:
         repository: $ECR_REPOSITORY_NGINX
-        image: $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX
         tag: $TAG_NGINX
         fail_threshold: critical
 
