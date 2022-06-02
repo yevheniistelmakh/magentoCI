@@ -45,9 +45,9 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
           
     - name: build nginx image           
-      run: |
+      run: 
         docker build -f nginx/Dockerfile -t $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX . 
-        echo ${{ github.event.inputs.tags }}
+        
     - name: Scan Docker image
       if: ${{ env.DISPATCH_TAG == 'false' }}
       uses: anchore/scan-action@v3
