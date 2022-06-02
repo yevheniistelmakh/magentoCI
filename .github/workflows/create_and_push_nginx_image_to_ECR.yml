@@ -14,13 +14,18 @@ on:
         description: 'skip scan'
         required: false 
         type: boolean
+      OLGA:
+        description: 'push image'
+        required: true 
+        type: boolean
 
 env:
   AWS_REGION:           eu-central-1
   TAG_NGINX:            latest
   ECR_REPOSITORY_NGINX: nginx
   ECR_REGISTRY_NGINX:   908410081654.dkr.ecr.eu-central-1.amazonaws.com
-  DISPATCH_TAG:         ${{ github.event.inputs.tags }}      
+  DISPATCH_TAG:         ${{ github.event.inputs.tags }}    
+  OLGA:      ${{ github.event.inputs.OLGA }}
 
 jobs:
   deploy:
@@ -59,6 +64,7 @@ jobs:
           fail_threshold: CRITICAL, MEDIUM
         
     - name: push nginx image
+      if: ${{ env.OLGA == 'true' }}
       run: 
         docker push $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX
 
