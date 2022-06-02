@@ -1,0 +1,66 @@
+name: Create and push nginx image to ECR
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Test scan'     
+        required: true
+        default: 'warning' 
+        type: choice
+        options:
+        - create nginx image
+      tags:
+        description: 'skip scan'
+        required: false 
+        type: boolean
+
+env:
+  AWS_REGION:           eu-central-1
+  TAG_NGINX:            latest
+  ECR_REPOSITORY_NGINX: nginx
+  ECR_REGISTRY_NGINX:   908410081654.dkr.ecr.eu-central-1.amazonaws.com
+  DISPATCH_TAG:         ${{ github.event.inputs.tags }}    
+  
+jobs:
+  deploy:
+    name: Deploy ubuntu
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+          
+    - name: build nginx image           
+      run: 
+        docker build -f nginx/Dockerfile -t $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX . 
+        
+    - name: Scan Docker image
+      if: ${{ env.DISPATCH_TAG == 'false' }}
+      uses: anchore/scan-action@v3
+  #    continue-on-error: true
+      with:
+          repository: $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX
+          tag: ${{ env.TAG_NGINX }}
+          fail-build: true
+          fail_threshold: CRITICAL, MEDIUM
+        
+    - name: push nginx image
+      run: 
+        docker push $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX
+
+
+      
