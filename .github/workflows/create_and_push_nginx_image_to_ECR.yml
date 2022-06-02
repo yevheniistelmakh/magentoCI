@@ -20,7 +20,7 @@ env:
   TAG_NGINX:            latest
   ECR_REPOSITORY_NGINX: nginx
   ECR_REGISTRY_NGINX:   908410081654.dkr.ecr.eu-central-1.amazonaws.com
-  DISPATCH_TAG:         ${{ github.event.inputs.tags }}    
+  SKIP_SCAN:            ${{ github.event.inputs.tags }}    
   
 jobs:
   deploy:
@@ -49,7 +49,7 @@ jobs:
         docker build -f nginx/Dockerfile -t $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX . 
         
     - name: Scan Docker image
-      if: ${{ env.DISPATCH_TAG == 'false' }}
+      if: ${{ env.SKIP_SCAN == 'false' }}
       uses: anchore/scan-action@v3
   #    continue-on-error: true
       with:
