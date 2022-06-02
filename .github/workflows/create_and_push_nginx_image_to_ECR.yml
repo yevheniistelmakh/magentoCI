@@ -9,7 +9,7 @@ on:
         default: 'warning' 
         type: choice
         options:
-        - create image
+        - create nginx image
       tags:
         description: 'skip scan'
         required: false 
