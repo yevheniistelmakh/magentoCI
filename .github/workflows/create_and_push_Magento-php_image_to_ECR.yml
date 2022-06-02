@@ -9,7 +9,7 @@ on:
         default: 'warning' 
         type: choice
         options:
-        - create php image
+        - create Magento image
       tags:
         description: 'skip scan'
         required: false 
