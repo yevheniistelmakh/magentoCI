@@ -35,7 +35,6 @@ jobs:
         docker build -f nginx/Dockerfile -t ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ secrets.TAG_NGINX }} . 
 
     - name: scan docker images
-      id: docker-scan
       uses: alexjurkiewicz/ecr-scan-image@v1.7.0
       with:
         repository: ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}
