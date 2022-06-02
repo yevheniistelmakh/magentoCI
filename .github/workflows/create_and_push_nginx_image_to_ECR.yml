@@ -7,6 +7,12 @@ on:
         description: Who to greet
         required: true
         default: 'GitHub Actions'
+
+env:
+  AWS_REGION:           eu-central-1
+  TAG_NGINX:            latest
+  ECR_REPOSITORY_NGINX: nginx
+  ECR_REGISTRY_NGINX:   908410081654.dkr.ecr.eu-central-1.amazonaws.com
         
 
 jobs:
@@ -25,7 +31,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
+        aws-region: $AWS_REGION
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -33,16 +39,16 @@ jobs:
           
     - name: build nginx image           
       run: |
-        docker build -f nginx/Dockerfile -t ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ secrets.TAG_NGINX }} . 
+        docker build -f nginx/Dockerfile -t $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX . 
 
     - name: scan docker images
       uses: alexjurkiewicz/ecr-scan-image@v1.7.0
       with:
-        repository: ${{ secrets.ECR_REPOSITORY_NGINX }}
-        tag: ${{ secrets.TAG_NGINX }}
-        fail_threshold: ${{ secrets.FAIL_THRESHOLD }}
+        repository: $ECR_REPOSITORY_NGINX
+        tag: $TAG_NGINX
+        fail_threshold: critical
 
     - name: push nginx image
       run:
-        docker push ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ secrets.TAG_NGINX }}
+        docker push ${{ secrets.ECR_REGISTRY_NGINX }}/${{ secrets.ECR_REPOSITORY_NGINX }}:${{ env.TAG_NGINX }}
       
