@@ -39,12 +39,7 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
     
-    - name: Configure AWS credentials to task definition
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
-        aws-region: ${{ env.AWS_REGION }}
-        role-duration-seconds: 1200
+
         
     - name: Render Amazon ECS task definition for first container nginx
       uses: aws-actions/amazon-ecs-render-task-definition@v1
