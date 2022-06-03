@@ -1,0 +1,70 @@
+name: Deploy to Amazon ECS
+
+on:
+ workflow_dispatch:
+        
+env:
+  AWS_REGION:                   eu-central-1                      
+  ECR_REPOSITORY:               magento3
+  ECR_REGISTRY:                 908410081654.dkr.ecr.eu-central-1.amazonaws.com
+  ECS_SERVICE:                  magento-service-CI                
+  ECS_CLUSTER:                  magento-cluster-CI                
+  ECS_TD_JSON_FILE:             AWS_ECS_task-definition.json 
+  ECS_TD_CONTAINER_PHP:         sigma_magento-php_fpm
+  ECS_TD_CONTAINER_NGINX:       sigma_magento-nginx
+  ECS_TD_IMAGE_TAG_PHP:         php-magento2
+  ECS_TD_IMAGE_TAG_NGINX:       nginx_123
+   
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy ubuntu
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    
+    - name: Configure AWS credentials to task definition
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
+        aws-region: ${{ env.AWS_REGION }}
+        role-duration-seconds: 1200
+        
+    - name: Render Amazon ECS task definition for first container nginx
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TD_JSON_FILE }}
+        container-name: ${{ env.ECS_TD_CONTAINER_NGINX }}
+        image: $ECR_REGISTRY/$ECR_REPOSITORY:$ECS_TD_IMAGE_TAG_NGINX
+    
+    - name: Render Amazon ECS task definition for second container php
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TD_JSON_FILE }}
+        container-name: ${{ env.ECS_TD_CONTAINER_PHP }}
+        image: $ECR_REGISTRY/$ECR_REPOSITORY:$MECS_TD_IMAGE_TAG_PHP
+   
+    - name: Deploy task definition in ECS service
+      run: aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --force-new-deployment
+      env:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+        
