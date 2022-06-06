@@ -3,6 +3,26 @@ name: Create and push nginx image to ECR
 on:
   workflow_dispatch:
     inputs:
+      AWS_ACCOUNT:
+        description: 'AWS ACCOUNT'
+        required: true
+        type: text
+        default: 908410081654
+      AWS_REGION:
+        description: 'AWS REGION'
+        required: true
+        type: text
+        default: eu-central-1
+      ECR_REPO:
+        description: 'ECR REPOSITORY'
+        required: true
+        type: text
+        default: nginx
+      IMAGE_TAG:
+        description: 'IMAGE TAG'
+        required: true
+        type: text
+        default: latest
       fail_scan:
         description: 'Fail build on scan findings?'
         required: true
@@ -10,10 +30,11 @@ on:
         default: true
 
 env:
-  AWS_ACCOUNT:          908410081654
-  AWS_REGION:           eu-central-1
-  TAG_NGINX:            latest
-  ECR_REPOSITORY:       nginx
+  #AWS_ACCOUNT:          908410081654
+  #AWS_REGION:           eu-central-1
+  #TAG_NGINX:            latest
+  #ECR_REPOSITORY:       nginx
+  DOCKER_IMAGE: ${{ github.event.inputs.AWS_ACCOUNT }}.dkr.ecr.${{ github.event.inputs.AWS_REGION }}.amazonaws.com/${{ github.event.inputs.ECR_REPOSITORY }}:${{ github.event.inputs.IMAGE_TAG }}
   
 jobs:
   deploy:
@@ -41,16 +62,16 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
           
     - name: build nginx image
-      env:
-        DOCKER_IMAGE: ${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.TAG_NGINX }}
+      #env:
+      #  DOCKER_IMAGE: ${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.TAG_NGINX }}
       run: 
         docker build -f nginx/Dockerfile -t ${{env.DOCKER_IMAGE}} . 
         
     - name: scan nginx image
       id: scan
       uses: anchore/scan-action@v3.2.5
-      env:
-        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
+      #env:
+      #  DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
       with:
         image:  '${{ env.DOCKER_IMAGE }}'
         fail-build: '${{ github.event.inputs.fail_scan }}'
@@ -63,8 +84,8 @@ jobs:
         sarif_file: ${{ steps.scan.outputs.sarif }}
         
     - name: push nginx image
-      env:
-        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
+      #env:
+      #  DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
       run: 
         docker push ${{ env.DOCKER_IMAGE }}
   
