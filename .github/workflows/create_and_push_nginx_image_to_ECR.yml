@@ -53,8 +53,9 @@ jobs:
       uses: anchore/scan-action@v3
       continue-on-error: true
       with:
-        image: "$ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX"        
-        severity-cutoff: HIGH, CRITICAL, MEDIUM
+        image: "$ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX"  
+        fail-build: true
+        severity-cutoff: HIGH
         
     - name: push nginx image
       run: 
