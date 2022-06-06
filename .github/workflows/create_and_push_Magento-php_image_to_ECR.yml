@@ -48,15 +48,14 @@ jobs:
       run: 
         docker build -f build_magento_image/Dockerfile -t $ECR_REGISTRY_MAGENTO/$ECR_REPOSITORY_MAGENTO:$TAG_MAGENTO . 
         
-    - name: Scan Docker image
+    - name: scan nginx image
       if: ${{ env.SKIP_SCAN == 'false' }}
-      uses: anchore/scan-action@v3
-  #    continue-on-error: true
+      uses: anchore/scan-action@v3.2.5
+      continue-on-error: true
       with:
-          repository: $ECR_REGISTRY_MAGENTO/$ECR_REPOSITORY_MAGENTO
-          tag: ${{ env.TAG_MAGENTO }}
-          fail-build: true
-          fail_threshold: critical, high, medium
+        image:  908410081654.dkr.ecr.eu-central-1.amazonaws.com/php_with_magento:latest
+        fail-build: false
+        severity-cutoff:  High
         
     - name: push Magento image
       run: 
