@@ -48,15 +48,14 @@ jobs:
       run: 
         docker build -f php-fpm/Dockerfile -t $ECR_REGISTRY_PHP/$ECR_REPOSITORY_PHP:$TAG_PHP . 
         
-    - name: Scan Docker image
+    - name: scan php image
       if: ${{ env.SKIP_SCAN == 'false' }}
-      uses: anchore/scan-action@v3
-  #    continue-on-error: true
+      uses: anchore/scan-action@v3.2.5
+      continue-on-error: true
       with:
-          repository: $ECR_REGISTRY_PHP/$ECR_REPOSITORY_PHP
-          tag: ${{ env.TAG_PHP }}
-          fail-build: true
-          fail_threshold: critical, high, medium, low
+        image:  908410081654.dkr.ecr.eu-central-1.amazonaws.com/php-fpm:latest
+        fail-build: false
+        severity-cutoff:  High
         
     - name: push php image
       run: 
