@@ -53,7 +53,7 @@ jobs:
       id: docker-scan
       uses: alexjurkiewicz/ecr-scan-image@v1.7.0     
       with:
-          repository: $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX
+          repository: $ECR_REPOSITORY_NGINX/"$ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX"
           tag: ${{ env.TAG_NGINX }}
           fail_threshold: critical
         
