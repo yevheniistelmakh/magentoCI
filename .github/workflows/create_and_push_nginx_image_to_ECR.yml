@@ -56,7 +56,7 @@ jobs:
       with:
         image:  908410081654.dkr.ecr.eu-central-1.amazonaws.com/nginx:latest
         fail-build: false
-        severity-cutoff:  Medium
+        severity-cutoff:  High
         
     - name: push nginx image
       run: 
