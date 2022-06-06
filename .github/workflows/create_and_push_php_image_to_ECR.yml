@@ -56,7 +56,7 @@ jobs:
           repository: $ECR_REGISTRY_PHP/$ECR_REPOSITORY_PHP
           tag: ${{ env.TAG_PHP }}
           fail-build: true
-          fail_threshold: critical, high, medium
+          fail_threshold: critical, high, medium, low
         
     - name: push php image
       run: 
