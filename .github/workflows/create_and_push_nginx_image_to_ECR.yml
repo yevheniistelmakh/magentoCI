@@ -21,12 +21,13 @@ env:
   AWS_ACCOUNT:          '908410081654'
   AWS_REGION:           'eu-central-1'
   TAG_NGINX:            'latest'
-  ECR_REGISTRY_NGINX:   '${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com'
-  ECR_REPOSITORY_NGINX: 'nginx'
-  IMAGE:                '${{ env.ECR_REGISTRY_NGINX }}/${{ env.ECR_REPOSITORY_NGINX }}:${{ env.TAG_NGINX }}'
   
 jobs:
   deploy:
+    env:
+      ECR_REGISTRY_NGINX:   ${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+      ECR_REPOSITORY_NGINX: 'nginx'
+      IMAGE:                ${{ env.ECR_REGISTRY_NGINX }}/${{ env.ECR_REPOSITORY_NGINX }}:${{ env.TAG_NGINX }}
     name: Deploy
     runs-on: ubuntu-latest
     permissions:
@@ -67,4 +68,3 @@ jobs:
     - name: push nginx image
       run: 
         docker push '${{ env.IMAGE }}'
-
