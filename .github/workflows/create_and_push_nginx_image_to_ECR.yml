@@ -43,7 +43,7 @@ jobs:
           
     - name: build nginx image
       env:
-        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
+        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
       run: 
         docker build -f nginx/Dockerfile -t ${{env.DOCKER_IMAGE}} . 
         
@@ -51,7 +51,7 @@ jobs:
       id: scan
       uses: anchore/scan-action@v3.2.5
       env:
-        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
+        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
       with:
         image:  '${{ env.DOCKER_IMAGE }}'
         fail-build: '${{ github.event.inputs.fail_scan }}'
@@ -65,7 +65,7 @@ jobs:
         
     - name: push nginx image
       env:
-        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
+        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
       run: 
-        docker push ${{DOCKER_IMAGE}}
+        docker push ${{ env.DOCKER_IMAGE }}
   
