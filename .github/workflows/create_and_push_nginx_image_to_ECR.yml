@@ -54,7 +54,7 @@ jobs:
       uses: anchore/scan-action@v3.2.5
       continue-on-error: true
       with:
-        image: "$IMAGE"  
+        image: $IMAGE  
         fail-build: false
         severity-cutoff: "Critical"
         
