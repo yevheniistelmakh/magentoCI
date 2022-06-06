@@ -24,7 +24,7 @@ env:
   
 jobs:
   deploy:
-    name: Deploy ubuntu
+    name: Deploy
     runs-on: ubuntu-latest
     permissions:
       packages: write
