@@ -55,7 +55,7 @@ jobs:
       with:
           repository: $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX
           tag: ${{ env.TAG_NGINX }}
-          fail_threshold: critical, medium, high, low
+          fail_threshold: critical
         
     - name: push nginx image
       run: 
