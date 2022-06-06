@@ -54,7 +54,7 @@ jobs:
       uses: anchore/scan-action@v3.2.5
       continue-on-error: true
       with:
-        image: "$IMAGE"  
+        image: "908410081654.dkr.ecr.eu-central-1.amazonaws.com/nginx:latest"  
         fail-build: false
         severity-cutoff: "Critical"
         
