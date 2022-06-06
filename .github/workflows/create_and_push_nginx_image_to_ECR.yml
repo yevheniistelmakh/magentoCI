@@ -20,7 +20,8 @@ env:
   TAG_NGINX:            latest
   ECR_REPOSITORY_NGINX: nginx
   ECR_REGISTRY_NGINX:   908410081654.dkr.ecr.eu-central-1.amazonaws.com
-  SKIP_SCAN:            ${{ github.event.inputs.tags }}    
+  SKIP_SCAN:            ${{ github.event.inputs.tags }}  
+  IMAGE:                $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX
   
 jobs:
   deploy:
@@ -53,7 +54,7 @@ jobs:
       uses: anchore/scan-action@v3.2.5
       continue-on-error: true
       with:
-        image: "$ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX"  
+        image: "$IMAGE"  
         fail-build: false
         severity-cutoff: "Critical"
         
