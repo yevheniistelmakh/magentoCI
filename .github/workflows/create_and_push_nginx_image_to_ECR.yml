@@ -50,7 +50,7 @@ jobs:
         
     - name: scan nginx image
       if: ${{ env.SKIP_SCAN == 'false' }}
-      uses: anchore/scan-action@v3
+      uses: anchore/scan-action@v3.2.5
       continue-on-error: true
       with:
         image: "$ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX"  
