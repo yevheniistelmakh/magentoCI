@@ -1,4 +1,3 @@
-
 name: Create and push nginx image to ECR
 
 on:
@@ -17,13 +16,12 @@ on:
         type: boolean
 
 env:
-  SKIP_SCAN:            ${{ github.event.inputs.tags }}
-  AWS_ACCOUNT:          '908410081654'
-  AWS_REGION:           'eu-central-1'
-  TAG_NGINX:            'latest'
-  ECR_REGISTRY_NGINX:   '${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com'
-  ECR_REPOSITORY_NGINX: 'nginx'
-  IMAGE:                '${{ env.ECR_REGISTRY_NGINX }}/${{ env.ECR_REPOSITORY_NGINX }}:${{ env.TAG_NGINX }}'
+  AWS_REGION:           eu-central-1
+  TAG_NGINX:            latest
+  ECR_REPOSITORY_NGINX: nginx
+  ECR_REGISTRY_NGINX:   908410081654.dkr.ecr.eu-central-1.amazonaws.com
+  SKIP_SCAN:            ${{ github.event.inputs.tags }}  
+  IMAGE:                908410081654.dkr.ecr.eu-central-1.amazonaws.com/nginx:latest
   
 jobs:
   deploy:
@@ -48,17 +46,21 @@ jobs:
           
     - name: build nginx image           
       run: 
-        docker build -f nginx/Dockerfile -t ${{ env.IMAGE }} . 
+        docker build -f nginx/Dockerfile -t $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX . 
         
     - name: scan nginx image
       if: ${{ env.SKIP_SCAN == 'false' }}
       uses: anchore/scan-action@v3.2.5
+      continue-on-error: false
       with:
         image:  '${{ env.IMAGE }}'
-        fail-build: '${{ env.SKIP_SCAN }}'
+        fail-build: true
         severity-cutoff:  High
         
     - name: push nginx image
       run: 
-        docker push '${{ env.IMAGE }}'
+        docker push $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX
 
+#if: ${{ env.SKIP_SCAN == 'false' }}
+
+      
