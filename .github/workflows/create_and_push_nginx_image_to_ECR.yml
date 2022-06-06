@@ -18,7 +18,7 @@ env:
   
 jobs:
   deploy:
-    name: Deploy
+    name: Build and Deploy
     runs-on: ubuntu-latest
     permissions:
       # required for all workflows
