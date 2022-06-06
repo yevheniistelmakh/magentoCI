@@ -55,7 +55,7 @@ jobs:
       continue-on-error: true
       with:
         image:  908410081654.dkr.ecr.eu-central-1.amazonaws.com/nginx:latest
-        fail-build: false
+        fail-build: true
         severity-cutoff:  High
         
     - name: push nginx image
