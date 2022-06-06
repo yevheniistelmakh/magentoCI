@@ -14,7 +14,6 @@ env:
   AWS_REGION:           eu-central-1
   TAG_NGINX:            latest
   ECR_REPOSITORY:       nginx
-  ECR_URL:              908410081654.dkr.ecr.eu-central-1.amazonaws.com
   SKIP_SCAN:            ${{ github.event.inputs.fail_scan }}
   
 jobs:
@@ -44,15 +43,17 @@ jobs:
           
     - name: build nginx image
       env:
-        DOCKER_IMAGE: '${{env.ECR_URL}}/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
+        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
       run: 
         docker build -f nginx/Dockerfile -t ${{env.DOCKER_IMAGE}} . 
         
     - name: scan nginx image
       id: scan
       uses: anchore/scan-action@v3.2.5
+      env:
+        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
       with:
-        image:  '${{ env.IMAGE }}'
+        image:  '${{ env.DOCKER_IMAGE }}'
         fail-build: '${{ github.event.inputs.fail_scan }}'
         severity-cutoff:  High
         acs-report-enable: true
@@ -63,9 +64,8 @@ jobs:
         sarif_file: ${{ steps.scan.outputs.sarif }}
         
     - name: push nginx image
+      env:
+        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
       run: 
-        docker push $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX
-
-#if: ${{ env.SKIP_SCAN == 'false' }}
-
-      
+        docker push ${{DOCKER_IMAGE}}
+  
