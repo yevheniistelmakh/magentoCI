@@ -49,8 +49,9 @@ jobs:
         docker build -f nginx/Dockerfile -t $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX . 
         
     - name: Scan Docker image
+      if: ${{ env.SKIP_SCAN == 'false' }}
       id: docker-scan
-      uses: gluehbirnenkopf/ecr-scan-image@v1.0     
+      uses: alexjurkiewicz/ecr-scan-image@v1.7.0     
       with:
           repository: $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX
           tag: ${{ env.TAG_NGINX }}
@@ -60,5 +61,6 @@ jobs:
       run: 
         docker push $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX
 
+#if: ${{ env.SKIP_SCAN == 'false' }}
 
       
