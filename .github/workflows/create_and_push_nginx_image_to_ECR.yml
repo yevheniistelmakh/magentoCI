@@ -54,7 +54,7 @@ jobs:
       continue-on-error: true
       with:
         image: "$ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX"  
-        fail-build: true
+        fail-build: false
         severity-cutoff: "Critical"
         
     - name: push nginx image
