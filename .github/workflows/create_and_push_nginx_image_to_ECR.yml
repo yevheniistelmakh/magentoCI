@@ -26,7 +26,9 @@ jobs:
       # only required for workflows in private repositories
       actions: read
       contents: read
-      
+    env:
+      DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'      
+
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -42,16 +44,15 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
           
     - name: build nginx image
-      env:
-        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
+
       run: 
         docker build -f nginx/Dockerfile -t ${{env.DOCKER_IMAGE}} . 
         
     - name: scan nginx image
       id: scan
       uses: anchore/scan-action@v3.2.5
-      env:
-        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
+      #env:
+      #  DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
       with:
         image:  '${{ env.DOCKER_IMAGE }}'
         fail-build: '${{ github.event.inputs.fail_scan }}'
@@ -64,8 +65,8 @@ jobs:
         sarif_file: ${{ steps.scan.outputs.sarif }}
         
     - name: push nginx image
-      env:
-        DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
+      #env:
+      #  DOCKER_IMAGE: '${{env.AWS_ACCOUNT}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.ECR_REPOSITORY}}:${{env.TAG_NGINX}}'
       run: 
         docker push ${{ env.DOCKER_IMAGE }}
   
