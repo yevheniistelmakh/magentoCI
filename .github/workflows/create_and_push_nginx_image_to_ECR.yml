@@ -48,14 +48,14 @@ jobs:
       run: 
         docker build -f nginx/Dockerfile -t $ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX . 
         
-    - name: Scan Docker image
+    - name: scan nginx image
       if: ${{ env.SKIP_SCAN == 'false' }}
-      id: docker-scan
-      uses: alexjurkiewicz/ecr-scan-image@v1.7.0     
+      uses: anchore/scan-action@v3
+      continue-on-error: true
       with:
-          repository: "908410081654.dkr.ecr.eu-central-1.amazonaws.com/nginx"
-          tag: ${{ env.TAG_NGINX }}
-          fail_threshold: critical
+        image: "$ECR_REGISTRY_NGINX/$ECR_REPOSITORY_NGINX:$TAG_NGINX"        
+        fail-build: true
+        severity: HIGH, CRITICAL, MEDIUM    
         
     - name: push nginx image
       run: 
