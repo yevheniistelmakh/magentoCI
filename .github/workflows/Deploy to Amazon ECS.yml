@@ -51,6 +51,7 @@ on:
      
 env:
   ECS_TD_JSON_FILE:             AWS_ECS_task-definition.json
+  TASK_VERSION:                      latest
 #   AWS_REGION:                   eu-central-1                                      ${{ github.event.inputs.AWS_REGION }}
 #   ECR_REPOSITORY:               magento3                                          ${{ github.event.inputs.ECR_REPO }}
 #   AWS_ACCOUNT:                  908410081654                                      ${{ github.event.inputs.AWS_ACCOUNT }}
