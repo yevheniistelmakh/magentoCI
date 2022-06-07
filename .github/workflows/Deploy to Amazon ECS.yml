@@ -2,18 +2,53 @@ name: Deploy to Amazon ECS
 
 on:
  workflow_dispatch:
-        
+   inputs:
+     AWS_ACCOUNT:
+       description: 'AWS ACCOUNT'
+       required: true
+       type: text
+       default: "908410081654"
+     AWS_REGION:
+       description: 'AWS REGION'
+       required: true
+       type: text
+       default: eu-central-1
+     ECR_REPO:
+       description: 'ECR REPOSITORY'
+       required: true
+       type: text
+       default: magento3
+     IMAGE_TAG_NGINX:
+       description: 'IMAGE TAG NGINX'
+       required: true
+       type: text
+       default: nginx_123   
+     IMAGE_TAG_PHP:
+       description: 'IMAGE TAG PHP'
+       required: true
+       type: text
+       default:  php-magento2
+     ECS_SERVICE:
+       description: 'ECS SERVICE'
+       required: true
+       type: text
+       default:  magento-service-CI
+     ECS_CLUSTER:
+       description: 'ECS CLUSTER'
+       required: true
+       type: text
+       default:  magento-cluster-CI
 env:
-  AWS_REGION:                   eu-central-1                      
-  ECR_REPOSITORY:               magento3
-  ECR_REGISTRY:                 908410081654.dkr.ecr.eu-central-1.amazonaws.com
-  ECS_SERVICE:                  magento-service-CI                
-  ECS_CLUSTER:                  magento-cluster-CI                
-  ECS_TD_JSON_FILE:             AWS_ECS_task-definition.json 
-  ECS_TD_CONTAINER_PHP:         sigma_magento-php_fpm
-  ECS_TD_CONTAINER_NGINX:       sigma_magento-nginx
-  ECS_TD_IMAGE_TAG_PHP:         php-magento2
-  ECS_TD_IMAGE_TAG_NGINX:       nginx_123
+  ECS_TD_JSON_FILE:             AWS_ECS_task-definition.json
+#   AWS_REGION:                   eu-central-1                      
+#   ECR_REPOSITORY:               magento3
+#   ECR_REGISTRY:                 908410081654.dkr.ecr.eu-central-1.amazonaws.com
+#    ECS_SERVICE:                  magento-service-CI                
+#    ECS_CLUSTER:                  magento-cluster-CI                  
+#    ECS_TD_CONTAINER_PHP:         sigma_magento-php_fpm
+#    ECS_TD_CONTAINER_NGINX:       sigma_magento-nginx
+#   ECS_TD_IMAGE_TAG_PHP:         php-magento2
+#   ECS_TD_IMAGE_TAG_NGINX:       nginx_123
    
 permissions:
   contents: read
@@ -33,10 +68,9 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+        aws-region: ${{ github.event.inputs.AWS_REGION }}
         
     - name: Login to Amazon ECR
-      id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
     
 
@@ -46,7 +80,7 @@ jobs:
       with:
         task-definition: ${{ env.ECS_TD_JSON_FILE }}
         container-name: ${{ env.ECS_TD_CONTAINER_NGINX }}
-        image: $ECR_REGISTRY/$ECR_REPOSITORY:$ECS_TD_IMAGE_TAG_NGINX
+        image: ${{ github.event.inputs.AWS_ACCOUNT }}.dkr.ecr.${{ github.event.inputs.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:$ECS_TD_IMAGE_TAG_NGINX
     
     - name: Render Amazon ECS task definition for second container php
       uses: aws-actions/amazon-ecs-render-task-definition@v1
@@ -60,6 +94,6 @@ jobs:
       env:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+        aws-region: ${{ github.event.inputs.AWS_REGION }}
         
         
