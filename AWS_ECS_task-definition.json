@@ -149,7 +149,7 @@
     "EXTERNAL",
     "EC2"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:eu-central-1:908410081654:task-definition/CccomboEXIT:latest",
+  "taskDefinitionArn": "arn:aws:ecs:eu-central-1:908410081654:task-definition/CccomboEXIT:'latest'",
   "family": "CccomboEXIT",
   "requiresAttributes": [
     {
