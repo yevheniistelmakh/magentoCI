@@ -149,7 +149,7 @@
     "EXTERNAL",
     "EC2"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:eu-central-1:908410081654:task-definition/CccomboEXIT:5",
+  "taskDefinitionArn": "arn:aws:ecs:eu-central-1:908410081654:task-definition/CccomboEXIT:${{ github.event.inputs.TASK_VERSION }}",
   "family": "CccomboEXIT",
   "requiresAttributes": [
     {
