@@ -28,6 +28,16 @@ on:
        required: true
        type: text
        default:  php-magento2
+     CONTAINER_NAME_PHP:
+       description: 'CONTAINER NAME PHP'
+       required: true
+       type: text
+       default:  sigma_magento-php_fpm
+     CONTAINER_NAME_NGINX:
+       description: 'CONTAINER NAME NGINX'
+       required: true
+       type: text
+       default:  sigma_magento-nginx
      ECS_SERVICE:
        description: 'ECS SERVICE'
        required: true
@@ -38,17 +48,19 @@ on:
        required: true
        type: text
        default:  magento-cluster-CI
+     
 env:
   ECS_TD_JSON_FILE:             AWS_ECS_task-definition.json
-#   AWS_REGION:                   eu-central-1                      
-#   ECR_REPOSITORY:               magento3
-#   ECR_REGISTRY:                 908410081654.dkr.ecr.eu-central-1.amazonaws.com
-#    ECS_SERVICE:                  magento-service-CI                
-#    ECS_CLUSTER:                  magento-cluster-CI                  
-#    ECS_TD_CONTAINER_PHP:         sigma_magento-php_fpm
-#    ECS_TD_CONTAINER_NGINX:       sigma_magento-nginx
-#   ECS_TD_IMAGE_TAG_PHP:         php-magento2
-#   ECS_TD_IMAGE_TAG_NGINX:       nginx_123
+#   AWS_REGION:                   eu-central-1                                      ${{ github.event.inputs.AWS_REGION }}
+#   ECR_REPOSITORY:               magento3                                          ${{ github.event.inputs.ECR_REPO }}
+#   AWS_ACCOUNT:                  908410081654                                      ${{ github.event.inputs.AWS_ACCOUNT }}
+#   ECR_REGISTRY:                 908410081654.dkr.ecr.eu-central-1.amazonaws.com    -\\-
+#    ECS_SERVICE:                  magento-service-CI                               ${{ github.event.inputs.ECS_SERVICE }}
+#    ECS_CLUSTER:                  magento-cluster-CI                               ${{ github.event.inputs.ECS_CLUSTER }}
+#    ECS_TD_CONTAINER_PHP:         sigma_magento-php_fpm                            ${{ github.event.inputs.CONTAINER_NAME_PHP }}
+#    ECS_TD_CONTAINER_NGINX:       sigma_magento-nginx                              ${{ github.event.inputs.CONTAINER_NAME_NGINX }}
+#   ECS_TD_IMAGE_TAG_PHP:         php-magento2                                      ${{ github.event.inputs.IMAGE_TAG_PHP }}
+#   ECS_TD_IMAGE_TAG_NGINX:       nginx_123                                         ${{ github.event.inputs.IMAGE_TAG_NGINX }}
    
 permissions:
   contents: read
@@ -80,20 +92,21 @@ jobs:
       with:
         task-definition: ${{ env.ECS_TD_JSON_FILE }}
         container-name: ${{ env.ECS_TD_CONTAINER_NGINX }}
-        image: ${{ github.event.inputs.AWS_ACCOUNT }}.dkr.ecr.${{ github.event.inputs.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:$ECS_TD_IMAGE_TAG_NGINX
+        image: ${{ github.event.inputs.AWS_ACCOUNT }}.dkr.ecr.${{ github.event.inputs.AWS_REGION }}.amazonaws.com/${{ github.event.inputs.ECR_REPO }}:$ECS_TD_IMAGE_TAG_NGINX
     
     - name: Render Amazon ECS task definition for second container php
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: ${{ env.ECS_TD_JSON_FILE }}
         container-name: ${{ env.ECS_TD_CONTAINER_PHP }}
-        image: $ECR_REGISTRY/$ECR_REPOSITORY:$MECS_TD_IMAGE_TAG_PHP
+        image: $ECR_REGISTRY/${{ github.event.inputs.ECR_REPO }}:$MECS_TD_IMAGE_TAG_PHP
    
     - name: Deploy task definition in ECS service
-      run: aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --force-new-deployment
+      run: aws ecs update-service --cluster ${{ github.event.inputs.ECS_CLUSTER }} --service ${{ github.event.inputs.ECS_SERVICE }} --force-new-deployment
       env:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ github.event.inputs.AWS_REGION }}
         
         
+  #      ${{ github.event.inputs.ECR_REPO }}  
