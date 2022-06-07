@@ -48,19 +48,25 @@ on:
        required: true
        type: text
        default:  magento-cluster-CI
+     TASK_VERSION:
+       description: 'TASK VERSION'
+       required: true
+       type: text
+       default:  latest
      
 env:
   ECS_TD_JSON_FILE:             AWS_ECS_task-definition.json
-#   AWS_REGION:                   eu-central-1                                      ${{ github.event.inputs.AWS_REGION }}
-#   ECR_REPOSITORY:               magento3                                          ${{ github.event.inputs.ECR_REPO }}
-#   AWS_ACCOUNT:                  908410081654                                      ${{ github.event.inputs.AWS_ACCOUNT }}
-#   ECR_REGISTRY:                 908410081654.dkr.ecr.eu-central-1.amazonaws.com    -\\-
+ # TASK_VERSION:                   latest                                           ${{ github.event.inputs.TASK_VERSION }}
+#   AWS_REGION:                    eu-central-1                                     ${{ github.event.inputs.AWS_REGION }}
+#   ECR_REPOSITORY:                magento3                                         ${{ github.event.inputs.ECR_REPO }}
+#   AWS_ACCOUNT:                   908410081654                                     ${{ github.event.inputs.AWS_ACCOUNT }}
+#   ECR_REGISTRY:                  908410081654.dkr.ecr.eu-central-1.amazonaws.com    -\\-
 #    ECS_SERVICE:                  magento-service-CI                               ${{ github.event.inputs.ECS_SERVICE_NAME }}
 #    ECS_CLUSTER:                  magento-cluster-CI                               ${{ github.event.inputs.ECS_CLUSTER_NAME }}
 #    ECS_TD_CONTAINER_PHP:         sigma_magento-php_fpm                            ${{ github.event.inputs.CONTAINER_NAME_PHP }}
 #    ECS_TD_CONTAINER_NGINX:       sigma_magento-nginx                              ${{ github.event.inputs.CONTAINER_NAME_NGINX }}
-#   ECS_TD_IMAGE_TAG_PHP:         php-magento2                                      ${{ github.event.inputs.IMAGE_TAG_PHP }}
-#   ECS_TD_IMAGE_TAG_NGINX:       nginx_123                                         ${{ github.event.inputs.IMAGE_TAG_NGINX }}
+#   ECS_TD_IMAGE_TAG_PHP:          php-magento2                                     ${{ github.event.inputs.IMAGE_TAG_PHP }}
+#   ECS_TD_IMAGE_TAG_NGINX:        nginx_123                                        ${{ github.event.inputs.IMAGE_TAG_NGINX }}
    
 permissions:
   contents: read
