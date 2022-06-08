@@ -48,11 +48,11 @@ on:
        required: true
        type: text
        default:  magento-cluster-CI
-     TASK_VERSION:
-       description: 'TASK VERSION'
-       required: true
-       type: text
-       default:  latest
+#      TASK_VERSION:
+#        description: 'TASK VERSION'
+#        required: true
+#        type: text
+#        default:  latest
      
 env:
   ECS_TD_JSON_FILE:             AWS_ECS_task-definition.json
@@ -112,5 +112,5 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ github.event.inputs.AWS_REGION }}
-      run: aws ecs update-service --cluster ${{ github.event.inputs.ECS_CLUSTER_NAME }} --service ${{ github.event.inputs.ECS_SERVICE_NAME }} --task-definition CccomboEXIT:4 --force-new-deployment
+      run: aws ecs update-service --cluster ${{ github.event.inputs.ECS_CLUSTER_NAME }} --service ${{ github.event.inputs.ECS_SERVICE_NAME }} --task-definition CccomboEXIT:3 --force-new-deployment
 
