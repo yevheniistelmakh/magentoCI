@@ -149,7 +149,7 @@
     "EXTERNAL",
     "EC2"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:eu-central-1:908410081654:task-definition/CccomboEXIT:3",
+  "taskDefinitionArn": "arn:aws:ecs:eu-central-1:908410081654:task-definition/CccomboEXIT:9",
   "family": "CccomboEXIT",
   "requiresAttributes": [
     {
@@ -208,7 +208,7 @@
   "networkMode": "bridge",
   "runtimePlatform": null,
   "cpu": null,
-  "revision": 3,
+  "revision": 9,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
