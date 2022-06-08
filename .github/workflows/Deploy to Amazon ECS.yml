@@ -117,17 +117,10 @@ jobs:
 #         cluster: ${{ github.event.inputs.ECS_CLUSTER_NAME }}
 
 
-    - name: Deploy task definition in ECS service
-      env:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ github.event.inputs.AWS_REGION }}
-      run: aws ecs update-service --cluster ${{ github.event.inputs.ECS_CLUSTER_NAME }} --service ${{ github.event.inputs.ECS_SERVICE_NAME }} --task-definition CccomboEXIT:3 --force-new-deployment
-
-#     - name: Deploy to Amazon ECS
-#       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-#       with:
-#         task-definition: '${{ env.ECS_TD_JSON_FILE }}'
-#         service: ${{ github.event.inputs.ECS_SERVICE_NAME }}
-#         cluster: ${{ github.event.inputs.ECS_CLUSTER_NAME }}
-#         wait-for-service-stability: true
+    - name: Deploy to Amazon ECS
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: '${{ env.ECS_TD_JSON_FILE }}'
+        service: ${{ github.event.inputs.ECS_SERVICE_NAME }}
+        cluster: ${{ github.event.inputs.ECS_CLUSTER_NAME }}
+        wait-for-service-stability: true
