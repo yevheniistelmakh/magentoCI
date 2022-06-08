@@ -116,11 +116,3 @@ jobs:
         service: ${{ github.event.inputs.ECS_SERVICE_NAME }}
         cluster: ${{ github.event.inputs.ECS_CLUSTER_NAME }}
 
-
-#     - name: Deploy to Amazon ECS
-#       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-#       with:
-#         task-definition: '${{ env.ECS_TD_JSON_FILE }}'
-#         service: ${{ github.event.inputs.ECS_SERVICE_NAME }}
-#         cluster: ${{ github.event.inputs.ECS_CLUSTER_NAME }}
-#         wait-for-service-stability: true
