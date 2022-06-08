@@ -122,7 +122,7 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ github.event.inputs.AWS_REGION }}
-      run: aws ecs update-service --cluster ${{ github.event.inputs.ECS_CLUSTER_NAME }} --service ${{ github.event.inputs.ECS_SERVICE_NAME }} --force-new-deployment
+      run: aws ecs update-service --cluster ${{ github.event.inputs.ECS_CLUSTER_NAME }} --service ${{ github.event.inputs.ECS_SERVICE_NAME }} --task-definition CccomboEXIT:latest --force-new-deployment
 
 #     - name: Deploy to Amazon ECS
 #       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
