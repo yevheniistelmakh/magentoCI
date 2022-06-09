@@ -97,6 +97,10 @@ jobs:
         fail-build: '${{ github.event.inputs.fail_scan }}'
         severity-cutoff:  High
         acs-report-enable: true
+        
+    - name: 'push ${{ github.event.inputs.ECR_REPO }} image'
+      run: 
+        docker push ${{ env.DOCKER_IMAGE }}
       
 
 
