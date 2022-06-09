@@ -121,7 +121,7 @@ jobs:
         task-definition: ${{ steps.render.outputs.task-definition }}
         service: ${{ github.event.inputs.ECS_SERVICE_NAME }}
         cluster: ${{ github.event.inputs.ECS_CLUSTER_NAME }}
-#         wait-for-service-stability: true
+        wait-for-service-stability: false
         
 #     - name: Deploy task definition in ECS service
 #       env:
