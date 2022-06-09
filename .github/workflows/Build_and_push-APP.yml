@@ -98,14 +98,7 @@ jobs:
         severity-cutoff:  High
         acs-report-enable: true
       
-    - name: upload Anchore scan SARIF report
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: ${{ steps.scan.outputs.sarif }}
-        
-    - name: 'push ${{ github.event.inputs.ECR_REPO }} image'
-      run: 
-        docker push ${{ env.DOCKER_IMAGE }}
+
 
         
         #--------------------------------------------------------------------------------
