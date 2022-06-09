@@ -1,0 +1,129 @@
+name: Deploy to Amazon ECS
+
+on:
+ workflow_dispatch:
+   inputs:
+     AWS_ACCOUNT:
+       description: 'AWS ACCOUNT'
+       required: true
+       type: text
+       default: 908410081654
+     AWS_REGION:
+       description: 'AWS REGION'
+       required: true
+       type: text
+       default: eu-central-1
+     ECR_REPO:
+       description: 'ECR REPOSITORY'
+       required: true
+       type: text
+       default: magento3 
+     IMAGE_TAG_PHP:
+       description: 'IMAGE TAG PHP'
+       required: true
+       type: text
+       default:  ${{ github.sha }}
+     CONTAINER_NAME_PHP:
+       description: 'CONTAINER NAME PHP'
+       required: true
+       type: text
+       default:  sigma_magento-php_fpm
+     ECS_SERVICE_NAME:
+       description: 'ECS SERVICE'
+       required: true
+       type: text
+       default:  magento-service-CI
+     ECS_CLUSTER_NAME:
+       description: 'ECS CLUSTER'
+       required: true
+       type: text
+       default:  magento-cluster-CI
+     fail_scan:
+       description: 'Fail build on scan findings?'
+       required: true
+       type: boolean
+       default: true
+
+     
+env:
+  ECS_TD_JSON_FILE:             AWS_ECS_task-definition.json
+  DOCKER_IMAGE: ${{ github.event.inputs.AWS_ACCOUNT }}.dkr.ecr.${{ github.event.inputs.AWS_REGION }}.amazonaws.com/${{ github.event.inputs.ECR_REPO }}:${{ github.event.inputs.IMAGE_TAG }}
+ # TASK_VERSION:                   latest                                           ${{ github.event.inputs.TASK_VERSION }}
+#   AWS_REGION:                    eu-central-1                                     ${{ github.event.inputs.AWS_REGION }}
+#   ECR_REPOSITORY:                magento3                                         ${{ github.event.inputs.ECR_REPO }}
+#   AWS_ACCOUNT:                   908410081654                                     ${{ github.event.inputs.AWS_ACCOUNT }}
+#   ECR_REGISTRY:                  908410081654.dkr.ecr.eu-central-1.amazonaws.com    -\\-
+#    ECS_SERVICE:                  magento-service-CI                               ${{ github.event.inputs.ECS_SERVICE_NAME }}
+#    ECS_CLUSTER:                  magento-cluster-CI                               ${{ github.event.inputs.ECS_CLUSTER_NAME }}
+#    ECS_TD_CONTAINER_PHP:         sigma_magento-php_fpm                            ${{ github.event.inputs.CONTAINER_NAME_PHP }}
+#    ECS_TD_CONTAINER_NGINX:       sigma_magento-nginx                              ${{ github.event.inputs.CONTAINER_NAME_NGINX }}
+#   ECS_TD_IMAGE_TAG_PHP:          php-magento2                                     ${{ github.event.inputs.IMAGE_TAG_PHP }}
+#   ECS_TD_IMAGE_TAG_NGINX:        nginx_123                                        ${{ github.event.inputs.IMAGE_TAG_NGINX }}
+   
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy ubuntu
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Git clone repo
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ github.event.inputs.AWS_REGION }}
+        
+    - name: Login to Amazon ECR
+      uses: aws-actions/amazon-ecr-login@v1
+      
+      #-------------------------------------------------------------------------------------------------------
+    
+    - name: 'Build ${{ github.event.inputs.ECR_REPO }} image'
+      run: 
+        docker build -f build_magento_image/Dockerfile -t ${{env.DOCKER_IMAGE}} . 
+        
+    - name: 'Scan ${{ github.event.inputs.ECR_REPO }} image'
+      id: scan
+      uses: anchore/scan-action@v3.2.5
+      with:
+        image:  '${{ env.DOCKER_IMAGE }}'
+        fail-build: '${{ github.event.inputs.fail_scan }}'
+        severity-cutoff:  High
+        acs-report-enable: true
+      
+    - name: upload Anchore scan SARIF report
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: ${{ steps.scan.outputs.sarif }}
+        
+    - name: 'push ${{ github.event.inputs.ECR_REPO }} image'
+      run: 
+        docker push ${{ env.DOCKER_IMAGE }}
+
+        
+        #--------------------------------------------------------------------------------
+       
+    - name: Render Amazon ECS task definition for second container php
+      id: render
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TD_JSON_FILE }}
+        container-name: ${{ github.event.inputs.CONTAINER_NAME_PHP }}
+        image: ${{ github.event.inputs.AWS_ACCOUNT }}.dkr.ecr.${{ github.event.inputs.AWS_REGION }}.amazonaws.com/${{ github.event.inputs.ECR_REPO }}:${{ github.event.inputs.IMAGE_TAG_PHP }}
+        
+    - name: Deploy task definition in ECS service
+      env:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ github.event.inputs.AWS_REGION }}
+      run: |
+       aws ecs stop-task --cluster magento-cluster-CI --task 124ba7b6dc814e85b9930d3b1e579dae
+       aws ecs update-service --cluster ${{ github.event.inputs.ECS_CLUSTER_NAME }} --service ${{ github.event.inputs.ECS_SERVICE_NAME }} --task-definition CccomboEXIT:9   --force-new-deployment
+    
