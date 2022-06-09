@@ -18,11 +18,11 @@ on:
        required: true
        type: text
        default: magento3 
-     IMAGE_TAG_PHP:
-       description: 'IMAGE TAG PHP'
-       required: true
-       type: text
-       default:  ${{ github.sha }}
+#      IMAGE_TAG_PHP:
+#        description: 'IMAGE TAG PHP'
+#        required: true
+#        type: text
+#        default:  ${{ github.sha }}
      CONTAINER_NAME_PHP:
        description: 'CONTAINER NAME PHP'
        required: true
@@ -47,7 +47,7 @@ on:
      
 env:
   ECS_TD_JSON_FILE:             AWS_ECS_task-definition.json
-  DOCKER_IMAGE: ${{ github.event.inputs.AWS_ACCOUNT }}.dkr.ecr.${{ github.event.inputs.AWS_REGION }}.amazonaws.com/${{ github.event.inputs.ECR_REPO }}:${{ github.event.inputs.IMAGE_TAG }}
+  DOCKER_IMAGE: ${{ github.event.inputs.AWS_ACCOUNT }}.dkr.ecr.${{ github.event.inputs.AWS_REGION }}.amazonaws.com/${{ github.event.inputs.ECR_REPO }}:${{ github.sha }}
  # TASK_VERSION:                   latest                                           ${{ github.event.inputs.TASK_VERSION }}
 #   AWS_REGION:                    eu-central-1                                     ${{ github.event.inputs.AWS_REGION }}
 #   ECR_REPOSITORY:                magento3                                         ${{ github.event.inputs.ECR_REPO }}
@@ -116,7 +116,7 @@ jobs:
       with:
         task-definition: ${{ env.ECS_TD_JSON_FILE }}
         container-name: ${{ github.event.inputs.CONTAINER_NAME_PHP }}
-        image: ${{ github.event.inputs.AWS_ACCOUNT }}.dkr.ecr.${{ github.event.inputs.AWS_REGION }}.amazonaws.com/${{ github.event.inputs.ECR_REPO }}:${{ github.event.inputs.IMAGE_TAG_PHP }}
+        image: '${{ env.DOCKER_IMAGE }}'
         
     - name: Deploy task definition in ECS service
       env:
