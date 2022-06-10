@@ -65,7 +65,7 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy and push
+    name: Build and Deploy
     runs-on: ubuntu-latest
     environment: production
 
