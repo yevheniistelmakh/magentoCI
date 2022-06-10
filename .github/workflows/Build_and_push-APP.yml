@@ -23,8 +23,8 @@ on:
        required: true
        type: text
        default:  input_name_here
-     CONTAINER_NAME_PHP:
-       description: 'CONTAINER NAME PHP'
+     CONTAINER_NAME_WITH_APP:
+       description: 'CONTAINER NAME WITH APP'
        required: true
        type: text
        default:  sigma_magento-php_fpm
@@ -111,7 +111,7 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: ${{ env.ECS_TD_JSON_FILE }}
-        container-name: ${{ github.event.inputs.CONTAINER_NAME_PHP }}
+        container-name: ${{ github.event.inputs.CONTAINER_NAME_WITH_APP }}
         image: '${{ env.DOCKER_IMAGE }}'
         
     - name: Stop the previous task (in order to start a new one)
