@@ -67,7 +67,6 @@ jobs:
   deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
     - name: Git clone repo
