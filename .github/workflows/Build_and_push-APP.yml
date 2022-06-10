@@ -40,9 +40,9 @@ on:
        default:  magento-cluster-CI
      fail_scan:
        description: 'Fail build on scan findings?'
-       required: false
+       required: true
        type: boolean
-       default: false
+       default: true
 
      
 env:
