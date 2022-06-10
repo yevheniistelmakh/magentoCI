@@ -18,11 +18,11 @@ on:
        required: true
        type: text
        default: magento3 
-#      IMAGE_TAG_PHP:
-#        description: 'IMAGE TAG PHP'
-#        required: true
-#        type: text
-#        default:  ${{ github.sha }}
+     NAME_TASK_TO_STOP:
+       description: 'NAME TASK TO STOP'  #${{ github.event.inputs.NAME_TASK_TO_STOP }}
+       required: true
+       type: text
+       default:  input_name_here
      CONTAINER_NAME_PHP:
        description: 'CONTAINER NAME PHP'
        required: true
@@ -121,7 +121,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ github.event.inputs.AWS_REGION }}
       run: 
-       aws ecs stop-task --cluster magento-cluster-CI --task ACTIVE
+       aws ecs stop-task --cluster magento-cluster-CI --task ${{ github.event.inputs.NAME_TASK_TO_STOP }}
         
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
