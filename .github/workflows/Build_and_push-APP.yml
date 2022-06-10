@@ -115,6 +115,14 @@ jobs:
         container-name: ${{ github.event.inputs.CONTAINER_NAME_PHP }}
         image: '${{ env.DOCKER_IMAGE }}'
         
+    - name: Deploy task definition in ECS service
+      env:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ github.event.inputs.AWS_REGION }}
+      run: 
+       aws ecs stop-task --cluster magento-cluster-CI --task 81c57dae5d8f4b40bddb02fd1c8b6da7
+        
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
@@ -123,12 +131,6 @@ jobs:
         cluster: ${{ github.event.inputs.ECS_CLUSTER_NAME }}
         wait-for-service-stability: false
         
-#     - name: Deploy task definition in ECS service
-#       env:
-#         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#         aws-region: ${{ github.event.inputs.AWS_REGION }}
-#       run: |
-#        aws ecs stop-task --cluster magento-cluster-CI --task 
+  
 #        aws ecs update-service --cluster ${{ github.event.inputs.ECS_CLUSTER_NAME }} --service ${{ github.event.inputs.ECS_SERVICE_NAME }} --force-new-deployment
     
