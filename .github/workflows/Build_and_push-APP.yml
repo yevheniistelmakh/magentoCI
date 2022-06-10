@@ -115,7 +115,7 @@ jobs:
         container-name: ${{ github.event.inputs.CONTAINER_NAME_PHP }}
         image: '${{ env.DOCKER_IMAGE }}'
         
-    - name: Deploy task definition in ECS service
+    - name: Stop the previous task (in order to start a new one)
       env:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
