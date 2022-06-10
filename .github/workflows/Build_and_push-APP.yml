@@ -106,7 +106,7 @@ jobs:
         
         #--------------------------------------------------------------------------------
        
-    - name: Render Amazon ECS task definition for second container php
+    - name: Render Amazon ECS task definition for second container with app
       id: render
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
