@@ -1,4 +1,4 @@
-name: Create and push nginx image to ECR
+name: Create and push PHP image to ECR
 
 on:
   workflow_dispatch:
