@@ -1,0 +1,81 @@
+name: Create and push MAGENTO APP image to app-repo
+
+on:
+  workflow_dispatch:
+    inputs:
+      AWS_ACCOUNT:
+        description: 'AWS ACCOUNT'
+        required: true
+        type: text
+        default: 908410081654
+      AWS_REGION:
+        description: 'AWS REGION'
+        required: true
+        type: text
+        default: eu-central-1
+      ECR_REPO:
+        description: 'ECR REPOSITORY'
+        required: true
+        type: text
+        default: php
+      IMAGE_TAG:
+        description: 'IMAGE TAG'
+        required: true
+        type: text
+        default: latest
+      fail_scan:
+        description: 'Fail build on scan findings?'
+        required: true
+        type: boolean
+        default: true
+
+env:
+  DOCKER_IMAGE: ${{ github.event.inputs.AWS_ACCOUNT }}.dkr.ecr.${{ github.event.inputs.AWS_REGION }}.amazonaws.com/${{ github.event.inputs.ECR_REPO }}:${{ github.event.inputs.IMAGE_TAG }}
+  
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      # required for all workflows
+      security-events: write
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ github.event.inputs.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      uses: aws-actions/amazon-ecr-login@v1
+          
+    - name: 'Build ${{ github.event.inputs.ECR_REPOSITORY }} image'
+      run: 
+        docker build -f build_magento_image/Dockerfile -t ${{env.DOCKER_IMAGE}} . 
+        
+    - name: 'Scan ${{ github.event.inputs.ECR_REPOSITORY }} image'
+      id: scan
+      uses: anchore/scan-action@v3.2.5
+      with:
+        image:  '${{ env.DOCKER_IMAGE }}'
+        fail-build: '${{ github.event.inputs.fail_scan }}'
+        severity-cutoff:  High
+        acs-report-enable: true
+      
+    - name: upload Anchore scan SARIF report
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: ${{ steps.scan.outputs.sarif }}
+        
+    - name: 'push ${{ github.event.inputs.ECR_REPOSITORY }} image'
+      run: 
+        docker push ${{ env.DOCKER_IMAGE }}
+  
