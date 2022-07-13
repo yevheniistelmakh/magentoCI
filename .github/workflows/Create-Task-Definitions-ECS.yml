@@ -1,72 +1,65 @@
+
 name: Deploy to Amazon ECS
 
 on:
  workflow_dispatch:
    inputs:
      AWS_ACCOUNT:
-       description: 'AWS ACCOUNT'
+       description: 'AWS account'
        required: true
        type: text
        default: 908410081654
      AWS_REGION:
-       description: 'AWS REGION'
+       description: 'AWS region'
        required: true
        type: text
-       default: eu-west-2
+       default: eu-west-1
      ECR_REPO:
-       description: 'ECR REPOSITORY'
+       description: 'ECR repository'
        required: true
-       type: text
-       default: application
-     IMAGE_TAG_NGINX:
-       description: 'IMAGE TAG NGINX'
-       required: true
-       type: text
-       default: nginx-1.0   
-     IMAGE_TAG_PHP:
-       description: 'IMAGE TAG APP'
-       required: true
-       type: text
-       default:  magento
-     CONTAINER_NAME_PHP:
-       description: 'CONTAINER NAME PHP'
-       required: true
-       type: text
-       default:  magento
+       type: choice
+       options:
+          - common
+          - aplication
      CONTAINER_NAME_NGINX:
-       description: 'CONTAINER NAME NGINX'
+        description: 'Container name first images'
+        required: true      
+        type: choice
+        options:
+           - magento_ecr_image_nginx
+           - sigma_magento-php_fpm
+           - php_magento
+     IMAGE_TAG_NGINX:
+      description: 'Image tag first images'
+      required: true
+      type: text
+      default: nginx
+     CONTAINER_NAME_PHP:
+       description: 'Container name second images'
        required: true
-       type: text
-       default:  nginx-1.0
-#      ECS_SERVICE_NAME:
-#        description: 'ECS SERVICE'
-#        required: true
-#        type: text
-#        default:  magento-service-CI
+       type: choice
+       options:
+          - magento_ecr_image_nginx
+          - sigma_magento-php_fpm
+          - php_magento
+     IMAGE_TAG_PHP:
+      description: 'Image tag second images'
+      required: true
+      type: text
+      default:  php     
      ECS_CLUSTER_NAME:
-       description: 'ECS CLUSTER'
+       description: 'ECS cluster'
        required: true
        type: text
        default:  ecs-prod-0001
-#      TASK_VERSION:
-#        description: 'TASK VERSION'
+#      ECS_SERVICE_NAME:
+#        description: 'ECS service'
 #        required: true
 #        type: text
-#        default:  latest
+#        default:  test3
      
 env:
-  ECS_TD_JSON_FILE:             AWS_ECS_task-definition.json
- # TASK_VERSION:                   latest                                           ${{ github.event.inputs.TASK_VERSION }}
-#   AWS_REGION:                    eu-central-1                                     ${{ github.event.inputs.AWS_REGION }}
-#   ECR_REPOSITORY:                magento3                                         ${{ github.event.inputs.ECR_REPO }}
-#   AWS_ACCOUNT:                   908410081654                                     ${{ github.event.inputs.AWS_ACCOUNT }}
-#   ECR_REGISTRY:                  908410081654.dkr.ecr.eu-central-1.amazonaws.com    -\\-
-#    ECS_SERVICE:                  magento-service-CI                               ${{ github.event.inputs.ECS_SERVICE_NAME }}
-#    ECS_CLUSTER:                  magento-cluster-CI                               ${{ github.event.inputs.ECS_CLUSTER_NAME }}
-#    ECS_TD_CONTAINER_PHP:         sigma_magento-php_fpm                            ${{ github.event.inputs.CONTAINER_NAME_PHP }}
-#    ECS_TD_CONTAINER_NGINX:       sigma_magento-nginx                              ${{ github.event.inputs.CONTAINER_NAME_NGINX }}
-#   ECS_TD_IMAGE_TAG_PHP:          php-magento2                                     ${{ github.event.inputs.IMAGE_TAG_PHP }}
-#   ECS_TD_IMAGE_TAG_NGINX:        nginx_123                                        ${{ github.event.inputs.IMAGE_TAG_NGINX }}
+  ECS-TASK_DEFENITION-JSON_FILE:             ecs-task-definition.json 
    
 permissions:
   contents: read
@@ -90,29 +83,26 @@ jobs:
         
     - name: Login to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v1
-    
-
-        
+       
     - name: Render Amazon ECS task definition for first container nginx
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: ${{ env.ECS_TD_JSON_FILE }}
+        task-definition: ${{ env.ECS-TASK_DEFENITION-JSON_FILE }}
         container-name: ${{ github.event.inputs.CONTAINER_NAME_NGINX }}
         image: ${{ github.event.inputs.AWS_ACCOUNT }}.dkr.ecr.${{ github.event.inputs.AWS_REGION }}.amazonaws.com/${{ github.event.inputs.ECR_REPO }}:${{ github.event.inputs.IMAGE_TAG_NGINX }}
     
     - name: Render Amazon ECS task definition for second container php
       uses: aws-actions/amazon-ecs-render-task-definition@v1
+      id: task-def
       with:
-        task-definition: ${{ env.ECS_TD_JSON_FILE }}
+        task-definition: ${{ env.ECS-TASK_DEFENITION-JSON_FILE }}
         container-name: ${{ github.event.inputs.CONTAINER_NAME_PHP }}
         image: ${{ github.event.inputs.AWS_ACCOUNT }}.dkr.ecr.${{ github.event.inputs.AWS_REGION }}.amazonaws.com/${{ github.event.inputs.ECR_REPO }}:${{ github.event.inputs.IMAGE_TAG_PHP }}
-        
-    - name: Deploy task definition in ECS service
-      env:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ github.event.inputs.AWS_REGION }}
-      run: |
-       aws ecs stop-task --cluster magento-cluster-CI --task 124ba7b6dc814e85b9930d3b1e579dae
-       aws ecs update-service --cluster ${{ github.event.inputs.ECS_CLUSTER_NAME }} --service ${{ github.event.inputs.ECS_SERVICE_NAME }} --task-definition CccomboEXIT:9   --force-new-deployment
-    
+      
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+     #   service: ${{ github.event.inputs.ECS_SERVICE_NAME }}
+     #   cluster: ${{ github.event.inputs.ECS_CLUSTER_NAME }}
+        wait-for-service-stability: true
