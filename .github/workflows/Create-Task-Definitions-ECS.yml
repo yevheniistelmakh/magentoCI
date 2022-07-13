@@ -1,5 +1,5 @@
 
-name: Deploy to Amazon ECS
+name: Create Task Definition
 
 on:
  workflow_dispatch:
