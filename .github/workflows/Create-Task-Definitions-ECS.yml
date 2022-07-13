@@ -12,42 +12,42 @@ on:
        description: 'AWS REGION'
        required: true
        type: text
-       default: eu-central-1
+       default: eu-west-2
      ECR_REPO:
        description: 'ECR REPOSITORY'
        required: true
        type: text
-       default: magento3
+       default: application
      IMAGE_TAG_NGINX:
        description: 'IMAGE TAG NGINX'
        required: true
        type: text
-       default: nginx_123   
+       default: nginx-1.0   
      IMAGE_TAG_PHP:
-       description: 'IMAGE TAG PHP'
+       description: 'IMAGE TAG APP'
        required: true
        type: text
-       default:  php-magento2
+       default:  magento
      CONTAINER_NAME_PHP:
        description: 'CONTAINER NAME PHP'
        required: true
        type: text
-       default:  sigma_magento-php_fpm
+       default:  magento
      CONTAINER_NAME_NGINX:
        description: 'CONTAINER NAME NGINX'
        required: true
        type: text
-       default:  sigma_magento-nginx
-     ECS_SERVICE_NAME:
-       description: 'ECS SERVICE'
-       required: true
-       type: text
-       default:  magento-service-CI
+       default:  nginx-1.0
+#      ECS_SERVICE_NAME:
+#        description: 'ECS SERVICE'
+#        required: true
+#        type: text
+#        default:  magento-service-CI
      ECS_CLUSTER_NAME:
        description: 'ECS CLUSTER'
        required: true
        type: text
-       default:  magento-cluster-CI
+       default:  ecs-prod-0001
 #      TASK_VERSION:
 #        description: 'TASK VERSION'
 #        required: true
