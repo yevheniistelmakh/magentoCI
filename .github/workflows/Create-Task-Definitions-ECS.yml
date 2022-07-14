@@ -26,9 +26,7 @@ on:
         required: true      
         type: choice
         options:
-           - magento_ecr_image_nginx
-           - sigma_magento-php_fpm
-           - php_magento
+           - sigma_magento-nginx
      IMAGE_TAG_NGINX:
       description: 'Image tag first images'
       required: true
@@ -39,7 +37,6 @@ on:
        required: true
        type: choice
        options:
-          - magento_ecr_image_nginx
           - sigma_magento-php_fpm
      IMAGE_TAG_PHP:
       description: 'Image tag second images'
