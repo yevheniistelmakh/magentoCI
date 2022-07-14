@@ -59,7 +59,7 @@ on:
 #        default:  test3
      
 env:
-  ECS-TASK_DEFENITION-JSON_FILE:             ecs-task-definition.json 
+  ECS-TASK_DEFENITION-JSON_FILE:      task-definition.json 
    
 permissions:
   contents: read
