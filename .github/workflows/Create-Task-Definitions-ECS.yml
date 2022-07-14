@@ -41,12 +41,11 @@ on:
        options:
           - magento_ecr_image_nginx
           - sigma_magento-php_fpm
-          - php_magento
      IMAGE_TAG_PHP:
       description: 'Image tag second images'
       required: true
       type: text
-      default:  php     
+      default:  magento     
      ECS_CLUSTER_NAME:
        description: 'ECS cluster'
        required: true
