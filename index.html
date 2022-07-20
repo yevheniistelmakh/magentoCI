@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health check</title>
+</head>
+
+<body>
+    <script>
+        var myDate = new Date();
+
+        let daysList = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        let monthsList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Aug', 'Oct', 'Nov', 'Dec'];
+
+
+        let date = myDate.getDate();
+        let month = monthsList[myDate.getMonth()];
+        let year = myDate.getFullYear();
+        let day = daysList[myDate.getDay()];
+
+        let today = `${date} ${month} ${year}, ${day}`;
+
+        let hours = myDate.getHours();
+        let minutes = myDate.getMinutes();
+        let seconds = myDate.getSeconds();
+        let milliseconds = myDate.getMilliseconds();
+
+        let currentTime = `${hours}:${minutes}:${seconds}.${milliseconds}`;
+
+        document.write('Last Sync: ' + today + ' ' + currentTime);
+    </script>
+</body>
+
+</html>
