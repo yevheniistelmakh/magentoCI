@@ -1,5 +1,5 @@
-#FROM php:8.1-fpm-alpine3.14
-FROM amatkovskiy/sigma_magento-php_fpm:8.1.8-fpm-alpine3.16
+FROM php:8.1-fpm-alpine3.14
+#FROM amatkovskiy/sigma_magento-php_fpm:8.1.8-fpm-alpine3.16
 
 RUN deluser www-data && adduser -u 1005 --disabled-password www-data 
 
@@ -21,7 +21,7 @@ RUN curl -sSLf \
 
 RUN install-php-extensions bcmath intl pdo_mysql soap sockets  xsl zip
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer 
-#COPY magento2 /var/www/html
+COPY magento3 /var/www/html
 COPY php-fpm/files/php.ini "$PHP_INI_DIR/php.ini"
 RUN composer install
 RUN chown -R www-data:www-data /var/www/html
