@@ -89,9 +89,9 @@ server {
         }
     }
 
-#    location / {
-#        try_files $uri $uri/ /index.php$is_args$args;
-#    }
+    location / {
+        try_files $uri $uri/ /index.php$is_args$args;
+    }
 
     location /custom_checks/fack_healthcheck {
         access_log off;
