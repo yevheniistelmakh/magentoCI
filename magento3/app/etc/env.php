@@ -16,10 +16,10 @@ return [
         'table_prefix' => '',
         'connection' => [
             'default' => [
-                'host' => 'rds-mysql-0001sb-0001.cw0o3oeadxtp.eu-west-2.rds.amazonaws.com',
+                'host' => '*****',
                 'dbname' => 'init_db',
                 'username' => 'root',
-                'password' => 'cnasoicoewh98yGd9wdgG973dwd',
+                'password' => '********',
                 'model' => 'mysql4',
                 'engine' => 'innodb',
                 'initStatements' => 'SET NAMES utf8;',
