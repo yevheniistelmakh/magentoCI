@@ -16,10 +16,10 @@ return [
         'table_prefix' => '',
         'connection' => [
             'default' => [
-                'host' => 'sigma_magento_db',
-                'dbname' => 'local_magento_db',
-                'username' => 'local_agent',
-                'password' => 'local_password',
+                'host' => 'rds-mysql-0001sb-0001.cw0o3oeadxtp.eu-west-2.rds.amazonaws.com',
+                'dbname' => 'init_db',
+                'username' => 'root',
+                'password' => 'cnasoicoewh98yGd9wdgG973dwd',
                 'model' => 'mysql4',
                 'engine' => 'innodb',
                 'initStatements' => 'SET NAMES utf8;',
