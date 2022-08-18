@@ -5,7 +5,7 @@
 
 
 ## Introduction:
-1. ### Preparing and configuring the working environment<br/>
+1. ## Preparing and configuring the working environment<br/>
    1.1 install terraform and terragrunt 
 
    1.2 create a working folder and load the terragrunt and terraform code into it 
@@ -13,7 +13,7 @@
    1.3 edit common.json and region.json files with appropriate settings/values
 
    1.4 create infrastructure using terragrunt
-2. ### Prepare and create pipelines, create resources (pipelines in Github Action, create images and upload them to a private repository in AWS)<br/> 
+2. ## Prepare and create pipelines, create resources (pipelines in Github Action, create images and upload them to a private repository in AWS)<br/> 
    2.1 Preparing files for building the nginx image
   
     
@@ -23,7 +23,7 @@
    2.3 Creating a pipeline for build and uploading images to the AWS ECR<br/>
 
 
-3. ### Create a pipeline to create a task-definition (use the [task-definition.json](https://github.com/yevheniistelmakh/magentoCI/blob/master/task-definition.json) template)
+3. ## Create a pipeline to create a task-definition (use the [task-definition.json](https://github.com/yevheniistelmakh/magentoCI/blob/master/task-definition.json) template)
    3.1 edit task-definition.json file with appropriate settings/values
    
    3.2 create a task definition using pipeline and template task-definition.json 
@@ -31,8 +31,8 @@
    3.3 create ECS-service
 
    3.4 enter the container with the application and configure the database
-4. ### Infrastructure cost 
-5. ### Literature and resources used
+4. ## Infrastructure cost 
+5. ## Literature and resources used
 ====================================================================
 
 |
@@ -42,7 +42,7 @@
 ====================================================================
 
 
-1) ### Preparing and configuring the working environment
+1) ## Preparing and configuring the working environment
    1.1 install [terraform](https://www.terraform.io/cli/install/apt) and [terragrunt](https://terragrunt.gruntwork.io/docs/getting-started/install/) (Requirement:
 Terraform >=1.2.2,
 Terragrunt >=0.37.1)
@@ -170,7 +170,7 @@ Terragrunt >=0.37.1)
       # cd infrastructure/terraform/sb-0001/eu-central-1/RDS/mysql-0001
       # terragrunt apply
       ```   
-2) ### Prepare and create pipelines, create resources (pipelines in github action, create images and upload them to a private repository in AWS)<br/>
+2) ## Prepare and create pipelines, create resources (pipelines in github action, create images and upload them to a private repository in AWS)<br/>
    2.1) Preparing files for building the nginx image<br/>
     Prepare and upload the Dockerfile and all necessary files for nginx to GitHub repository.
    [Example](https://github.com/yevheniistelmakh/magentoCI/tree/master/nginx)
@@ -289,7 +289,7 @@ Terragrunt >=0.37.1)
 
 
 
-3. ### Create a pipeline to create a task-definition (use the [task-definition.json](https://github.com/yevheniistelmakh/magentoCI/blob/master/task-definition.json) template)
+3. ## Create a pipeline to create a task-definition (use the [task-definition.json](https://github.com/yevheniistelmakh/magentoCI/blob/master/task-definition.json) template)
    3.1 edit task-definition.json file with appropriate settings/values.<br/>
    Replace and substitute your values in the task-definition.json file. Change container names, region, task name, etc.
    
@@ -413,7 +413,9 @@ Terragrunt >=0.37.1)
    After that, the application should start.
 
 
-4. ### Infrastructure cost<br/>
+4. ## Infrastructure cost<br/>
 =====================================<br/>
 ![AWS Cost](https://scontent.fhrk1-1.fna.fbcdn.net/v/t39.30808-6/300079222_5386909018043135_5850578562522961376_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=0debeb&_nc_ohc=bqSwKVsHbYYAX8H-J6E&_nc_ht=scontent.fhrk1-1.fna&oh=00_AT-EMTAU-8c1TzQeVwQwPMHu7B0xt6MVBSOTQ7fBgYnxeg&oe=630174C6)<br/>
+
+5. ## Literature and resources used
 
