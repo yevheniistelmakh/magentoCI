@@ -437,5 +437,3 @@ Terragrunt >=0.37.1)
    * [System requirements for Magento](https://devdocs.magento.com/guides/v2.4/install-gde/system-requirements.html)
    * [Required PHP settings](https://devdocs.magento.com/guides/v2.4/install-gde/prereq/php-settings.html)
    * [](https://docs.google.com/document/d/1h4_H9FUSgaWqv4UpOcUU1aZcsrPPr6sZ_oSS_hQkp50/edit)
-
-   <!-- TOC -->autoauto- [__How to install Magento on AWS__](#__how-to-install-magento-on-aws__)auto- [Description:<br/>](#descriptionbr)auto        - [This tutorial is designed to help you understand how to install Magenta on ABC. By following this guide, you will easily install and configure the Magenta application step by step.<br/>](#this-tutorial-is-designed-to-help-you-understand-how-to-install-magenta-on-abc-by-following-this-guide-you-will-easily-install-and-configure-the-magenta-application-step-by-stepbr)auto- [Requirements:<br/>](#requirementsbr)auto    - [Introduction:](#introduction)autoauto<!-- /TOC -->
