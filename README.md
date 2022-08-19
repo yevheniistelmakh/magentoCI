@@ -4,13 +4,13 @@
 ![Magento + AWS](https://magecomp.com/blog/wp-content/uploads/2020/04/How-to-Install-Magento-on-Amazon-Web-Services-950x500.png)
 
 # Description:<br/>
-### This tutorial is designed to help you understand how to install Magenta on AWS. By following this guide, you will easily install and configure the Magenta application step by step.<br/>
+### This tutorial is designed to help you understand how to install Magento on AWS. By following this guide, you will easily install and configure the Magento application step by step.<br/>
 # Requirements:<br/>
 * Terraform version 1.2.2 (How to install terraform you could look [here](https://www.terraform.io/cli/install/apt))
 * Terragrunt version 0.37.1 (How to install terraform you could look [here](https://terragrunt.gruntwork.io/docs/getting-started/install/))
 * AWS CLI - installed and configured
-* Folder with Magenta installed. How to do it you can see [here](https://docs.google.com/document/d/1h4_H9FUSgaWqv4UpOcUU1aZcsrPPr6sZ_oSS_hQkp50/edit?usp=sharing)
-* Dump the database that Magenta creates during installation. How to do this you can see [here](https://docs.google.com/document/d/1h4_H9FUSgaWqv4UpOcUU1aZcsrPPr6sZ_oSS_hQkp50/edit?usp=sharing).
+* Folder with Magento installed. How to do it you can see [here](https://docs.google.com/document/d/1h4_H9FUSgaWqv4UpOcUU1aZcsrPPr6sZ_oSS_hQkp50/edit?usp=sharing)
+* Dump the database that Magento creates during installation. How to do this you can see [here](https://docs.google.com/document/d/1h4_H9FUSgaWqv4UpOcUU1aZcsrPPr6sZ_oSS_hQkp50/edit?usp=sharing).
 * Account GitHub
 * Prepare the Dockerfile and dependencies in advance to create the Nginx image (see examples [here](https://github.com/yevheniistelmakh/magentoCI/tree/master/nginx)).
 * Prepare the Dockerfile and dependencies in advance to create the Application image (see examples [here](https://github.com/yevheniistelmakh/magentoCI/tree/master/build_magento_image)).
