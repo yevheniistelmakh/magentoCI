@@ -182,7 +182,8 @@ Terragrunt >=0.37.1)
       ```
       # cd infrastructure/terraform/sb-0001/eu-central-1/RDS/mysql-0001
       # terragrunt apply
-      ```   
+      ```
+      After you have raised and launched the database, you need to add a dump of the database that the application creates during installation. 
 2) ## Prepare and create pipelines, create resources (pipelines in github action, create images and upload them to a private repository in AWS)<br/>
    2.1) Preparing files for building the nginx image<br/>
     Prepare and upload the Dockerfile and all necessary files for nginx to GitHub repository.
@@ -436,4 +437,4 @@ Terragrunt >=0.37.1)
    * [Source code Magento on GitHub](https://github.com/magento/magento2/tree/2.4-develop)
    * [System requirements for Magento](https://devdocs.magento.com/guides/v2.4/install-gde/system-requirements.html)
    * [Required PHP settings](https://devdocs.magento.com/guides/v2.4/install-gde/prereq/php-settings.html)
-   * [1](https://docs.google.com/document/d/1h4_H9FUSgaWqv4UpOcUU1aZcsrPPr6sZ_oSS_hQkp50/edit)
+   * [How to install Magento localy](https://docs.google.com/document/d/1h4_H9FUSgaWqv4UpOcUU1aZcsrPPr6sZ_oSS_hQkp50/edit)
