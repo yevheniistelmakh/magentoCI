@@ -4,7 +4,7 @@
 ![Magento + AWS](https://magecomp.com/blog/wp-content/uploads/2020/04/How-to-Install-Magento-on-Amazon-Web-Services-950x500.png)
 
 # Description:<br/>
-### This tutorial is designed to help you understand how to install Magenta on ABC. By following this guide, you will easily install and configure the Magenta application step by step.<br/>
+### This tutorial is designed to help you understand how to install Magenta on AWS. By following this guide, you will easily install and configure the Magenta application step by step.<br/>
 # Requirements:<br/>
 * Terraform version 1.2.2 (How to install terraform you could look [here](https://www.terraform.io/cli/install/apt))
 * Terragrunt version 0.37.1 (How to install terraform you could look [here](https://terragrunt.gruntwork.io/docs/getting-started/install/))
