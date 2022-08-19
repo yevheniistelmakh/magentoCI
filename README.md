@@ -3,6 +3,19 @@
 
 ![Magento + AWS](https://magecomp.com/blog/wp-content/uploads/2020/04/How-to-Install-Magento-on-Amazon-Web-Services-950x500.png)
 
+# Description:<br/>
+### This tutorial is designed to help you understand how to install Magenta on ABC. By following this guide, you will easily install and configure the Magenta application step by step.<br/>
+# Requirements:<br/>
+* Terraform version 1.2.2 (How to install terraform you could look [here](https://www.terraform.io/cli/install/apt))
+* Terragrunt version 0.37.1 (How to install terraform you could look [here](https://terragrunt.gruntwork.io/docs/getting-started/install/))
+* AWS CLI - installed and configured
+* Folder with Magenta installed. How to do it you can see [here](https://docs.google.com/document/d/1h4_H9FUSgaWqv4UpOcUU1aZcsrPPr6sZ_oSS_hQkp50/edit?usp=sharing)
+* Dump the database that Magenta creates during installation. How to do this you can see [here](https://docs.google.com/document/d/1h4_H9FUSgaWqv4UpOcUU1aZcsrPPr6sZ_oSS_hQkp50/edit?usp=sharing).
+* Account GitHub
+* Prepare the Dockerfile and dependencies in advance to create the Nginx image (see examples [here](https://github.com/yevheniistelmakh/magentoCI/tree/master/nginx)).
+* Prepare the Dockerfile and dependencies in advance to create the Application image (see examples [here](https://github.com/yevheniistelmakh/magentoCI/tree/master/build_magento_image)).
+
+
 
 ## Introduction:
 1. ## Preparing and configuring the working environment<br/>
@@ -31,8 +44,8 @@
    3.3 create ECS-service
 
    3.4 enter the container with the application and configure the database
-4. ## Infrastructure cost 
-5. ## Literature and resources used
+4. ### Infrastructure cost 
+5. ### Literature and resources used
 ====================================================================
 
 |
@@ -414,8 +427,15 @@ Terragrunt >=0.37.1)
 
 
 4. ## Infrastructure cost<br/>
-=====================================<br/>
-![AWS Cost](https://scontent.fhrk1-1.fna.fbcdn.net/v/t39.30808-6/300079222_5386909018043135_5850578562522961376_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=0debeb&_nc_ohc=bqSwKVsHbYYAX8H-J6E&_nc_ht=scontent.fhrk1-1.fna&oh=00_AT-EMTAU-8c1TzQeVwQwPMHu7B0xt6MVBSOTQ7fBgYnxeg&oe=630174C6)<br/>
+[Estimate summary](https://calculator.aws/#/estimate?id=37d4e302edd010985844ee67794231046c498062)
 
-5. ## Literature and resources used
+================================================================<br/>
+![AWS Cost](https://scontent.fhrk1-1.fna.fbcdn.net/v/t39.30808-6/300233403_5388726444528059_3913294422592281872_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=0debeb&_nc_ohc=8fafkJ9cm0EAX9DRzGm&_nc_ht=scontent.fhrk1-1.fna&oh=00_AT_bM_cOGfbcZhvEMkRp2uTMY-uCe2Py29qV7LwX7irfAg&oe=6302F833)<br/>
 
+5. ## Literature and resources used<br/>
+   * [Source code Magento on GitHub](https://github.com/magento/magento2/tree/2.4-develop)
+   * [System requirements for Magento](https://devdocs.magento.com/guides/v2.4/install-gde/system-requirements.html)
+   * [Required PHP settings](https://devdocs.magento.com/guides/v2.4/install-gde/prereq/php-settings.html)
+   * [](https://docs.google.com/document/d/1h4_H9FUSgaWqv4UpOcUU1aZcsrPPr6sZ_oSS_hQkp50/edit)
+
+   <!-- TOC -->autoauto- [__How to install Magento on AWS__](#__how-to-install-magento-on-aws__)auto- [Description:<br/>](#descriptionbr)auto        - [This tutorial is designed to help you understand how to install Magenta on ABC. By following this guide, you will easily install and configure the Magenta application step by step.<br/>](#this-tutorial-is-designed-to-help-you-understand-how-to-install-magenta-on-abc-by-following-this-guide-you-will-easily-install-and-configure-the-magenta-application-step-by-stepbr)auto- [Requirements:<br/>](#requirementsbr)auto    - [Introduction:](#introduction)autoauto<!-- /TOC -->
