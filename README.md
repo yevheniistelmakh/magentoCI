@@ -183,7 +183,8 @@ Terragrunt >=0.37.1)
       # cd infrastructure/terraform/sb-0001/eu-central-1/RDS/mysql-0001
       # terragrunt apply
       ```
-      After you have raised and launched the database, you need to add a dump of the database that the application creates during installation. 
+      After you have raised and launched the database, you need to add a dump of the database that the application creates during installation.<br/>
+      It is also necessary to correct the configuration of the Load Balancer (Licener 443)(НУЖНО ОТРЕДАКТИРОВАТЬ.)
 2) ## Prepare and create pipelines, create resources (pipelines in github action, create images and upload them to a private repository in AWS)<br/>
    2.1) Preparing files for building the nginx image<br/>
     Prepare and upload the Dockerfile and all necessary files for nginx to GitHub repository.
